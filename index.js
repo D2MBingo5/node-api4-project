@@ -10,6 +10,10 @@ const server = express()
 server.use(express.json())
 server.use(cors())
 
+server.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`)
+})
+
 const users = [
     {
         username: 'johnny donuts',
@@ -25,6 +29,19 @@ server.get('/api/users', (req, res) => {
     res.json({ users: users })
 })
 
-server.listen(PORT, () => {
-    console.log(`listening on port ${PORT}`)
+server.post('/api/register', (req, res) => {
+    const newUser = req.body
+    if(!newUser.username || !newUser.password) {
+        res.status(400).json({ message: 'please provide username and password' })
+    } else {
+        users.push(newUser)
+        return Promise.resolve(newUser)
+            .then(user => {
+                res.status(201).json(user)
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({ message: 'error encountered' })
+            })
+    }
 })
