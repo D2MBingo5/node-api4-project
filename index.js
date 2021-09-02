@@ -10,7 +10,20 @@ const server = express()
 server.use(express.json())
 server.use(cors())
 
+const users = [
+    {
+        username: 'johnny donuts',
+        password: 'pass123'
+    },
+    {
+        username: 'pastela',
+        password: 'pass456'
+    }
+]
 
+server.get('/api/users', (req, res) => {
+    res.json({ users: users })
+})
 
 server.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
